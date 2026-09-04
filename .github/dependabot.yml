@@ -14,7 +14,9 @@ updates:
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
-      - dependency-name: gradle-wrapper
+      # Major Android/Kotlin/Gradle upgrades require an intentional compatibility
+      # migration; Dependabot continues to group safe minor and patch updates.
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
