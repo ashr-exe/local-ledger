@@ -5,8 +5,9 @@ checksum. Never commit a keystore or password.
 
 ## One-time repository setup
 
-1. Create a dedicated Android upload keystore and back it up securely outside the
-   repository.
+1. Create a dedicated Android release-signing keystore and back it up securely
+   outside the repository. For APKs distributed directly through GitHub, this is
+   the app-signing key and must remain available for the app's lifetime.
 2. Add these GitHub Actions secrets:
    - `ANDROID_KEYSTORE_BASE64`
    - `ANDROID_KEYSTORE_PASSWORD`
@@ -24,6 +25,16 @@ base64 < release.jks | tr -d '\n'
 
 Store the output only in the GitHub secret—not in shell history, an issue, a
 commit, or project documentation.
+
+## GitHub releases and Google Play
+
+The workflow signs GitHub Release APKs directly, so
+`ANDROID_KEYSTORE_BASE64` must contain the permanent key used for those APKs.
+Google Play App Signing can instead keep the Play-distributed app-signing key and
+let the developer use a separate, resettable upload key. Decide whether releases
+across GitHub, Play, and other stores must share one signing identity before the
+first public APK is installed; Android updates normally require the signing
+certificate expected by the installed app.
 
 ## Cutting a release
 
