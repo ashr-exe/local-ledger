@@ -45,3 +45,6 @@ be retained only when it is already present in the public TRAI-derived registry.
 Use focused, imperative commit subjects. Pull requests should explain the user
 impact, risk, validation performed, and any privacy or permission change. At least
 one maintainer approval and a green required-check set are expected before merge.
+
+Unless explicitly stated otherwise, contributions intentionally submitted for
+inclusion are provided under the repository's Apache License 2.0.

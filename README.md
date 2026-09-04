@@ -5,6 +5,7 @@
 [![Android 8+](https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white)](docs/BUILD.md)
 [![Offline](https://img.shields.io/badge/network_permission-none-5C6BC0)](docs/PRIVACY.md)
 [![Status: alpha](https://img.shields.io/badge/status-alpha-orange)](docs/LIMITATIONS.md)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
 An offline-first Android personal-finance tracker that turns verified Indian bank
 SMS alerts into a useful local ledger—without an account, a cloud backend,
@@ -118,6 +119,4 @@ updating it without adding a runtime network dependency is a roadmap item.
 
 ## License
 
-No open-source license has been selected yet. Until a `LICENSE` file is added,
-copyright law reserves all rights. This must be resolved before accepting outside
-contributions or advertising the project as open source.
+Licensed under the [Apache License 2.0](LICENSE).
