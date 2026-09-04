@@ -30,7 +30,7 @@ jobs:
         with:
           languages: java-kotlin
           build-mode: manual
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       - name: Build for analysis
         run: ./gradlew --no-daemon assembleDebug
       - uses: github/codeql-action/analyze@v3
