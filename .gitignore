@@ -1,0 +1,56 @@
+# Gradle and Kotlin
+.gradle/
+.kotlin/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Android SDK and generated artifacts
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# IDEs and editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+*~
+
+# Signing keys and credentials
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+keystore.properties
+signing.properties
+service-account*.json
+google-services.json
+.env
+.env.*
+!.env.example
+
+# Reports, logs, and temporary files
+*.log
+*.hprof
+lint-results*
+test-results/
+tmp/
+temp/
+
+# Local project work and packaged deliverables
+work/
+outputs/
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
