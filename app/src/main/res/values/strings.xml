@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">Local Ledger</string>
     <string name="remove">Remove</string>
+    <string name="adjust_bank_balance">Adjust selected bank balance</string>
+    <string name="demo_amount" translatable="false">425.00</string>
+    <string name="demo_merchant">Demo merchant 3</string>
 </resources>

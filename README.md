@@ -27,8 +27,14 @@ analytics, or internet permission.
 - **Defensive ingestion:** a sender must match the bundled bank-specific registry
   before a message is parsed. Duplicate delivery and inbox scanning share one
   fingerprint-based deduplication path.
-- **Useful personalisation:** give merchants nicknames, create custom categories,
-  set monthly category budgets, and view a compact dashboard.
+- **Diagnosable without leaking messages:** a copyable pipeline report records
+  only rejection stages and boolean parser signals. It keeps at most 120 events
+  for seven days and contains no SMS bodies or financial values.
+- **Useful personalisation:** nicknames, categories, inheritable tags, manual
+  entries, flexible budgets, filters, local reports, and a modular dashboard.
+- **Safe to demo:** hide everything quickly or explore stable synthetic values,
+  labels, graphs, transaction/budget drill-downs, and feature previews without
+  exposing real ledger content. Demo mode supplies sample data when the ledger is empty.
 
 ## What it tracks
 
@@ -38,10 +44,11 @@ movements described by supported SMS templates. It extracts the amount,
 credit/debit direction, transaction time when present, and a best-effort merchant
 label. Full SMS bodies are not retained after parsing.
 
-The bundled static registry currently contains **46 banks and 562 normalized
-sender headers**, derived from TRAI's compiled SMS-header workbook dated
-16 June 2020. Carrier/circle routing prefixes and message-category suffixes are
-normalized before matching.
+The bundled static registry currently contains **46 banks and 563 normalized
+sender headers**: 562 derived from TRAI's compiled SMS-header workbook dated
+16 June 2020 plus one separately marked, reviewed field-observed correction.
+Carrier/circle routing prefixes and message-category suffixes are normalized
+before matching. Official and observed provenance remain distinct in the asset.
 
 ## Install
 
@@ -55,18 +62,36 @@ normalized before matching.
    tracking**.
 5. Grant `RECEIVE_SMS` and `READ_SMS` when Android asks.
 
-Until the first signed release exists, build from source using
-[the build guide](docs/BUILD.md). Do not install APKs attached by unknown third
-parties.
+Android and some OEMs restrict sensitive permissions for sideloaded apps. If the
+SMS switch is unavailable, open **Settings → Apps → Local Ledger**, use the
+three-dot menu to choose **Allow restricted settings**, then return to
+**Permissions → SMS**. Labels vary by phone.
+
+Play Protect may also warn about an unverified sideloaded APK using SMS access.
+Install only the APK from this repository's signed release, verify
+`SHA256SUMS`, and prefer **Install anyway** when offered. If a device leaves no
+alternative and you deliberately pause Play Protect scanning, re-enable it
+immediately after installation. Google recommends keeping Play Protect enabled.
+
+The latest signed build is on the repository's Releases page. Developers can
+also build from source using [the build guide](docs/BUILD.md). Do not install
+APKs attached by unknown third parties.
 
 ## Everyday use
 
 - New matching bank alerts are processed automatically.
 - Open the app to rescan messages received since tracking began.
-- Assign a nickname and category to a merchant; the rule applies consistently to
-  matching transactions.
-- Add monthly category caps and use the dashboard to compare spending with the
-  chosen plan.
+- Tap a transaction to set its merchant nickname/category and attach payment-only
+  or merchant-wide tags. Category tags are inherited too.
+- Add cash or other manual entries. Choose whether each entry adjusts the
+  selected bank's calculated balance.
+- Filter by period, bank, direction, category, merchant, or tag; sort activity by
+  date, amount, or merchant.
+- Reorder or hide dashboard modules. Included views cover balance drill-down,
+  cash flow, daily pace, category mix, Sankey-style money flow, budget status,
+  insights, and recent activity.
+- Export detailed CSV or formatted PDF reports through Android's local document
+  picker. There is no cloud backup.
 
 The app presents 50/30/20 only as an optional starting framework. Budgeting is
 personal, so categories and caps remain user-defined.
@@ -77,17 +102,20 @@ personal, so categories and caps remain user-defined.
 |---|---|
 | `RECEIVE_SMS` | Process new bank alerts when Android delivers them. |
 | `READ_SMS` | Recover eligible messages received after tracking began while the app was stopped. |
+| `POST_NOTIFICATIONS` | Optional, requested only after creating a budget, for one quiet budget alert per period. |
 
 There is deliberately no internet, contacts, location, phone, call-log, storage,
-notification, advertising-ID, or analytics permission. Android backup and
-device-to-device transfer are disabled for ledger data. See the full
+advertising-ID, or analytics permission. Network permissions are explicitly
+removed during manifest merging, CI enforces the source contract, and releases
+inspect the final APK. Android backup and device-to-device transfer are disabled
+for ledger data. See the full
 [privacy model](docs/PRIVACY.md).
 
 ## Known limits
 
 The dashboard cannot be 100% authoritative. Banks and carriers may omit, delay,
 duplicate, truncate, or change an alert; some transactions are statement-only;
-and a parser may misinterpret an unfamiliar template. Cash, credit cards, and
+and a parser may misinterpret an unfamiliar template. Credit cards and
 activity before setup are outside the current scope. Read the complete
 [limitations](docs/LIMITATIONS.md) before relying on totals.
 
@@ -95,6 +123,8 @@ activity before setup are outside the current scope. Read the complete
 
 - [Build and install](docs/BUILD.md)
 - [Architecture and design](docs/DESIGN.md)
+- [SMS parser support](docs/PARSER_SUPPORT.md)
+- [Open-source parser research](docs/PRIOR_ART.md)
 - [Privacy and permissions](docs/PRIVACY.md)
 - [Limitations](docs/LIMITATIONS.md)
 - [Roadmap](docs/ROADMAP.md)
@@ -104,7 +134,7 @@ activity before setup are outside the current scope. Read the complete
 
 ## Development status
 
-Version `0.1.0` is an alpha foundation. Unit tests, Android lint, release builds,
+Version `0.2.0` is an alpha reliability and product-depth release. Unit tests, Android lint, release builds,
 dependency updates, and CodeQL analysis are automated through GitHub Actions.
 See [CHANGELOG.md](CHANGELOG.md) for shipped changes and
 [the roadmap](docs/ROADMAP.md) for planned work.

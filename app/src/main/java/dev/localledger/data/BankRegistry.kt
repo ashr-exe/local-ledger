@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.JsonReader
 import java.io.InputStreamReader
 import java.util.Locale
+import dev.localledger.sms.SenderHeaderNormalizer
 
 class BankRegistry(context: Context) {
     val banks: List<BankDefinition>
@@ -45,16 +46,7 @@ class BankRegistry(context: Context) {
     fun isPromotionalSender(rawSender: String): Boolean =
         rawSender.trim().uppercase(Locale.ROOT).endsWith("-P")
 
-    fun normalizeSender(rawSender: String): String {
-        var value = rawSender.trim().uppercase(Locale.ROOT).replace(" ", "")
-        if (value.length >= 4 && value[2] == '-' && value[0].isLetter() && value[1].isLetter()) {
-            value = value.substring(3)
-        }
-        if (value.length > 2 && value[value.length - 2] == '-' && value.last() in "PSTG") {
-            value = value.dropLast(2)
-        }
-        return value
-    }
+    fun normalizeSender(rawSender: String): String = SenderHeaderNormalizer.normalize(rawSender)
 
     private fun readBanks(reader: JsonReader, output: MutableList<BankDefinition>) {
         reader.beginArray()
@@ -67,7 +59,7 @@ class BankRegistry(context: Context) {
                 when (reader.nextName()) {
                     "id" -> id = reader.nextString()
                     "name" -> name = reader.nextString()
-                    "headers" -> {
+                    "headers", "observedHeaders" -> {
                         reader.beginArray()
                         while (reader.hasNext()) headers += reader.nextString().uppercase(Locale.ROOT)
                         reader.endArray()

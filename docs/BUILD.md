@@ -2,13 +2,13 @@
 
 ## Requirements
 
-- Android Studio with Android SDK 35 and JDK 17, or equivalent command-line tools
+- Android Studio with Android SDK 36 and JDK 17, or equivalent command-line tools
 - Android 8.0 (API 26) or newer phone with SMS capability
 
 ## Build
 
 ```sh
-./gradlew testDebugUnitTest lintDebug assembleDebug
+./gradlew testDebugUnitTest lintDebug assembleDebug verifyOfflineContract
 ```
 
 The APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
@@ -33,6 +33,29 @@ On first run:
 
 Only one account per bank is supported in this version. Explicit credit-card transaction alerts are ignored because cards are not part of the account setup yet.
 
+### If SMS permission is blocked
+
+Sensitive permissions may be restricted for sideloaded apps:
+
+1. Open **Settings → Apps → Local Ledger**.
+2. Open the three-dot menu and choose **Allow restricted settings**.
+3. Return to **Permissions → SMS** and allow access.
+4. Open Local Ledger → **Settings → Scan for missed messages**.
+5. If nothing imports, use **Copy privacy-safe diagnostics** and attach the
+   result to a bug report. It contains no SMS body or financial values.
+
+Wording varies by Android version and OEM. A force-stopped app cannot receive
+SMS broadcasts until it is opened again.
+
+### Play Protect
+
+Google Play Protect may warn about or block an unverified sideloaded APK with
+sensitive access. Install only the signed GitHub release after verifying
+`SHA256SUMS`. Prefer **Install anyway** when offered. If your device provides no
+alternative and you deliberately pause **Play Store → Play Protect → Settings →
+Scan apps with Play Protect**, re-enable it immediately after installation.
+Google recommends leaving Play Protect enabled.
+
 ## Release builds
 
 An unsigned, optimized build can be produced locally with:
@@ -47,7 +70,10 @@ in [RELEASING.md](RELEASING.md).
 
 ## Sender registry
 
-`app/src/main/assets/bank_sender_registry.json` is generated from TRAI's compiled header workbook published on 16 June 2020. Rebuild it with:
+The official `headers` arrays in
+`app/src/main/assets/bank_sender_registry.json` are generated from TRAI's
+compiled workbook published on 16 June 2020. Separately reviewed corrections use
+`observedHeaders` so provenance is not blurred. Rebuild the official snapshot with:
 
 ```sh
 python tools/extract_trai_registry.py path/to/List_SMS_Headers_16062020.xlsx \
@@ -57,3 +83,7 @@ python tools/extract_trai_registry.py path/to/List_SMS_Headers_16062020.xlsx \
 TRAI source: https://www.trai.gov.in/node/7411
 
 The first two routing characters and the message-category suffix are stripped before lookup. For example, `VD-KOTAKB-T` is matched as `KOTAKB`.
+
+Never add a private message verbatim. Add a fully invented fixture that preserves
+only the template grammar, and document any observed header without names,
+account fragments, amounts, phone numbers, references, or timestamps.

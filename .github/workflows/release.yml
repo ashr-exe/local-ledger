@@ -44,6 +44,19 @@ jobs:
           sha256sum "local-ledger-${GITHUB_REF_NAME#v}.apk" > SHA256SUMS
       - name: Verify APK signature
         run: "$ANDROID_HOME/build-tools/35.0.0/apksigner verify --verbose --print-certs local-ledger-${GITHUB_REF_NAME#v}.apk"
+      - name: Verify release version
+        run: |
+          actual="$("$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "local-ledger-${GITHUB_REF_NAME#v}.apk" | sed -n "s/.*versionName='\([^']*\)'.*/\1/p" | head -1)"
+          test "$actual" = "${GITHUB_REF_NAME#v}"
+      - name: Verify offline permission contract
+        run: |
+          permissions="$("$ANDROID_HOME/build-tools/35.0.0/aapt" dump permissions "local-ledger-${GITHUB_REF_NAME#v}.apk")"
+          printf '%s\n' "$permissions"
+          if printf '%s\n' "$permissions" | grep -E \
+            'android\.permission\.(INTERNET|ACCESS_NETWORK_STATE|CHANGE_NETWORK_STATE|ACCESS_WIFI_STATE|CHANGE_WIFI_STATE)'; then
+            echo "Release APK unexpectedly has network capability" >&2
+            exit 1
+          fi
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}

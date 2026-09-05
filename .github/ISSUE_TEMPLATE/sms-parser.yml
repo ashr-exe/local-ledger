@@ -1,0 +1,67 @@
+name: SMS parser gap
+description: Report a recognized bank alert that was missed or parsed incorrectly
+title: "parser: "
+labels: [parser]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not paste a real SMS.** Invent or aggressively sanitize every value while preserving only sentence structure. Remove account digits, names, UPI IDs, references, balances, amounts, dates, phone numbers, and links.
+  - type: input
+    id: bank
+    attributes:
+      label: Bank
+      placeholder: Example Bank
+    validations:
+      required: true
+  - type: input
+    id: sender
+    attributes:
+      label: Normalized sender header
+      description: Remove the first carrier/circle prefix and final category suffix.
+      placeholder: EXAMPLEB
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: App result
+      options:
+        - Unknown sender
+        - Recognized but not parsed
+        - Wrong amount
+        - Wrong debit or credit direction
+        - Wrong date or time
+        - Wrong merchant
+        - False transaction from a non-transaction message
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Privacy-safe diagnostic excerpt
+      description: Copy only the relevant lines from Settings. This report contains no SMS or financial values.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: grammar
+    attributes:
+      label: Invented message with the same grammar
+      description: Use XX1234, SAMPLE STORE, a fictional amount/date, and a clearly fake reference.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected fields
+      placeholder: Debit; amount from the first transaction clause; merchant SAMPLE STORE; message date
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: I confirmed that this issue contains no real SMS text or personal/financial identifiers.
+          required: true

@@ -13,14 +13,14 @@ defensive parsing model.
 
 ## Local workflow
 
-1. Use JDK 17 and Android SDK 35.
+1. Use JDK 17 and Android SDK 36.
 2. Create a topic branch from `main`.
 3. Make the smallest coherent change.
 4. Add sanitized tests for parser or data-layer behavior.
 5. Run:
 
    ```sh
-   ./gradlew testDebugUnitTest lintDebug assembleDebug
+   ./gradlew testDebugUnitTest lintDebug assembleDebug verifyOfflineContract
    ```
 
 6. Open a pull request using the repository template.
@@ -28,12 +28,20 @@ defensive parsing model.
 ## SMS fixtures
 
 Parser tests must use invented examples. Replace account fragments, reference
-numbers, merchant identifiers, phone numbers, and timestamps. A sender header may
-be retained only when it is already present in the public TRAI-derived registry.
+numbers, merchant identifiers, phone numbers, amounts, and timestamps. Keep
+official workbook headers in `headers`. A field-observed correction may use
+`observedHeaders` only after review, without publishing the source message or
+reporter's identity.
+
+Use the **SMS parser gap** issue form and read
+[the parser support guide](docs/PARSER_SUPPORT.md). A false positive belongs in
+the grow-only adversarial test corpus before the parser is changed.
 
 ## Design expectations
 
 - Do not add `INTERNET` permission, telemetry, ads, or remote configuration.
+- Do not remove the manifest's explicit network-permission removals or the
+  offline-contract release check.
 - Avoid dependencies when Android or Kotlin standard APIs are sufficient.
 - Reject uncertain messages rather than silently creating confident-looking data.
 - Keep schema migrations forward-only and covered by tests.

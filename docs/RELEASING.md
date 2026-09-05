@@ -41,7 +41,7 @@ certificate expected by the installed app.
 1. Confirm the changelog date, version name, and version code.
 2. Run `./gradlew clean testDebugUnitTest lintDebug assembleRelease` locally.
 3. Merge through a reviewed pull request with all required checks green.
-4. Create and push an annotated tag such as `v0.1.0`.
+4. Create and push an annotated tag matching the version, such as `v0.2.0`.
 5. The release workflow builds and signs the APK, generates `SHA256SUMS`, and
    creates a GitHub Release with generated notes.
 6. Download the published APK, verify its certificate and checksum, then perform a
@@ -51,5 +51,5 @@ certificate expected by the installed app.
 
 ```sh
 sha256sum -c SHA256SUMS
-apksigner verify --verbose --print-certs local-ledger-0.1.0.apk
+apksigner verify --verbose --print-certs local-ledger-0.2.0.apk
 ```

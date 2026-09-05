@@ -23,7 +23,8 @@ authoritative account record.
 - A previously unseen template can be rejected, classified incorrectly, or yield
   an incomplete merchant label.
 - The sender registry is static and currently derived from a 2020 TRAI workbook;
-  legitimate newer or changed headers may be absent.
+  legitimate newer or changed headers may be absent. Reviewed field-observed
+  additions are stored separately from the official source list.
 - Sender matching reduces false positives but is not cryptographic proof of
   origin. SMS sender presentation depends on the telecom ecosystem and device.
 
@@ -38,11 +39,14 @@ recorded as their own events when alerts arrive.
 ## Current product scope
 
 - One account per bank.
-- Bank accounts only; explicit credit-card alerts are ignored.
+- Bank accounts only; explicit credit-card alerts are ignored. Credit-card
+  tracking is planned, but not supported in this release.
 - No statement import or reconciliation.
-- No editing, split transactions, recurring-transaction model, or exchange-rate
-  handling.
-- No encrypted export, backup, or cross-device synchronization.
+- Manual additions, merchant/category rules, and tags are supported, but deletion,
+  split transactions, recurring-transaction automation, and exchange-rate
+  handling are not.
+- CSV/PDF export exists, but there is no report import, encrypted archive,
+  automatic backup, or cross-device synchronization.
 - No guarantee that every Indian bank or regional institution is represented.
 - The dashboard is informational and is not financial, tax, accounting, or legal
   advice.
@@ -52,3 +56,11 @@ recorded as their own events when alerts arrive.
 Use Local Ledger for awareness and budgeting. Reconcile against official bank
 statements before paying bills, filing taxes, disputing transactions, or making
 decisions where an incorrect balance could cause harm.
+
+## Sideloading
+
+Android or an OEM may block an unverified sideloaded app from receiving sensitive
+SMS access until the user explicitly allows restricted settings. Play Protect may
+also warn or block installation. These platform controls are outside the app.
+Install only a checksum-verified signed release and re-enable any temporarily
+paused device protection immediately.

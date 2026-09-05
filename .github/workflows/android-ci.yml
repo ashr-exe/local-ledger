@@ -26,7 +26,16 @@ jobs:
           java-version: "17"
       - uses: gradle/actions/setup-gradle@v6
       - name: Test, lint, and build
-        run: ./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug
+        run: ./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug verifyOfflineContract
+      - name: Verify built APK has no network permission
+        run: |
+          permissions="$("$ANDROID_HOME/build-tools/35.0.0/aapt" dump permissions app/build/outputs/apk/debug/app-debug.apk)"
+          printf '%s\n' "$permissions"
+          if printf '%s\n' "$permissions" | grep -E \
+            'android\.permission\.(INTERNET|ACCESS_NETWORK_STATE|CHANGE_NETWORK_STATE|ACCESS_WIFI_STATE|CHANGE_WIFI_STATE)'; then
+            echo "Debug APK unexpectedly has network capability" >&2
+            exit 1
+          fi
       - name: Upload reports
         if: always()
         uses: actions/upload-artifact@v7

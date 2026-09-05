@@ -356,6 +356,9 @@
         "ICIOTP",
         "ISECLD",
         "ISRVCE"
+      ],
+      "observedHeaders": [
+        "ICICIT"
       ]
     },
     {

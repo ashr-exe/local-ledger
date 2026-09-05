@@ -7,25 +7,25 @@ directional, not a delivery commitment.
 
 - Expand the sanitized parser corpus across banks, rails, reversals, fees, and
   ambiguous templates.
-- Add an in-app review queue for low-confidence and rejected bank messages without
-  retaining unnecessary content.
-- Add manual correction, deletion, split transactions, and opening-balance edits.
+- Add an opt-in, locally redacted review flow for unfamiliar templates without
+  retaining complete SMS content.
+- Add deletion, split transactions, opening-balance edits, and explicit
+  reconciliation adjustments.
 - Add statement import and reconciliation with explicit discrepancy reporting.
-- Version the sender registry and publish provenance/checksums for every update.
+- Automate registry provenance checks and periodic offline snapshot releases.
 
 ## Account and budgeting depth
 
 - Support multiple accounts per bank and credit cards.
 - Add transfer pairing while retaining both underlying account events.
-- Add recurring expenses, sinking funds, rollover budgets, goals, and configurable
-  budget periods.
-- Add richer, accessible dashboards and user-selectable widgets without a heavy UI
-  runtime.
+- Add recurring expenses, sinking funds, rollover budgets, and goals.
+- Add module sizing and module-specific display settings while retaining the
+  native lightweight dashboard contract.
 
 ## Portability without surveillance
 
-- Add explicit encrypted export/import using a user-held passphrase.
-- Add local CSV/JSON export with clear privacy warnings.
+- Add explicit encrypted archive export/import using a user-held passphrase.
+- Add CSV import with a deliberate mapping and duplicate-review flow.
 - Evaluate opt-in device-to-device synchronization that remains end-to-end
   encrypted; no sync service will be mandatory.
 
